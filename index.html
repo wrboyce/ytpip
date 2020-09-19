@@ -13,8 +13,8 @@
     </form>
     <iframe id="iframe" width="560" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     <script type="text/javascript">
-        const txt = document.getElementById('input')
-        const frm = document.getElementById('iframe');
+        const input = document.getElementById('input')
+        const frame = document.getElementById('iframe');
 
         const parseUrl = (txt) => {
             let id = txt;
@@ -25,10 +25,21 @@
             return `https://youtube.com/embed/${id}?&autoplay=1`;
         };
 
-        document.getElementById('form').addEventListener('submit', (evt) => {
-            evt.preventDefault();
-            frm.src = parseUrl(txt.value);
-        });
+        const submitHandler = (evt) => {
+            frame.src = parseUrl(input.value);
+            if (evt != null) {
+                evt.preventDefault();
+            }
+        };
+        document.getElementById('form').addEventListener('submit', submitHandler);
+
+        (() => {
+            const v = new URLSearchParams(window.location.search).get('v');
+            if (v != null) {
+                input.value = v;
+                submitHandler();
+            }
+        })();
     </script>
   </body>
 </html>
